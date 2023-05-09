@@ -22,16 +22,17 @@ RUN mkdir -p /elmfire/elmfire && \
         wget && \
     pip3 install --no-cache-dir google-api-python-client python-dateutil && \
     python3 -m pip install grpcio grpcio-tools && \
-    locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8
-
-COPY ./temp/ /elmfire/elmfire/
-
-WORKDIR /elmfire/elmfire/build/linux
-RUN ./make_gnu.sh && \
-    apt-get purge -y build-essential && \
-    apt-get autoremove -y && \
+    locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+COPY ./ /elmfire/elmfire/
+
+WORKDIR /elmfire/elmfire/build/linux
+
+RUN ./make_gnu.sh && \
+    apt-get purge -y build-essential && \
+    apt-get autoremove -y
 
 WORKDIR /
 
